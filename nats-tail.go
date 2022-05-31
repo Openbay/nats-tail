@@ -62,6 +62,11 @@ func main() {
 	var showTimestamp = flag.Bool("t", false, "Display timestamp")
 	var showVersion = flag.Bool("v", false, "Show nats-tail version")
 
+	token := os.Getenv("NATS_TOKEN")
+	if token == "" {
+		log.Fatalf("ENV NATS_TOKEN Not found")
+	}
+
 	log.SetFlags(0)
 	flag.Usage = usage
 	flag.Parse()
@@ -76,7 +81,7 @@ func main() {
 		usage()
 	}
 
-	nc, err := nats.Connect(*urls, nats.Token("YOUR_TOKEN"))
+	nc, err := nats.Connect(*urls, nats.Token(token))
 	if err != nil {
 		log.Fatalf("Can't connect: %s\n", err)
 	}

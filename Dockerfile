@@ -12,6 +12,8 @@ RUN go build -a -o /app/nats-tail
 #RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 #&& ln -sf /dev/stderr /var/log/nginx/error.log
 FROM scratch
+ARG NATS_TOKEN
+ENV NATS_TOKEN=${NATS_TOKEN}
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /app/nats-tail /nats-tail
 ENTRYPOINT ["/nats-tail"]
